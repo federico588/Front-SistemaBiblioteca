@@ -1,0 +1,133 @@
+<div class="usuario-list">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Gestión de Usuarios</h2>
+      <button class="btn btn-success" (click)="openCreateModal()">Nuevo Usuario</button>
+    </div>
+    
+    <div class="card-body">
+      <div class="filters mb-3">
+        <input 
+          type="text" 
+          class="form-control" 
+          placeholder="Buscar por nombre, usuario o email..."
+          [(ngModel)]="searchTerm"
+        >
+      </div>
+
+      <div class="table-responsive" *ngIf="!loading">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Usuario</th>
+              <th>Email</th>
+              <th>Teléfono</th>
+              <th>Rol</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="filteredUsuarios.length === 0">
+              <td colspan="7" class="text-center">No hay usuarios disponibles</td>
+            </tr>
+            <tr *ngFor="let usuario of filteredUsuarios">
+              <td>{{ usuario.nombre }}</td>
+              <td>{{ usuario.nombre_usuario }}</td>
+              <td>{{ usuario.email }}</td>
+              <td>{{ usuario.telefono || '-' }}</td>
+              <td>
+                <span class="badge" [class.badge-primary]="usuario.es_admin" [class.badge-info]="!usuario.es_admin">
+                  {{ usuario.es_admin ? 'Admin' : 'Usuario' }}
+                </span>
+              </td>
+              <td>
+                <span class="badge" [class.badge-success]="usuario.activo" [class.badge-danger]="!usuario.activo">
+                  {{ usuario.activo ? 'Activo' : 'Inactivo' }}
+                </span>
+              </td>
+              <td>
+                <button class="btn btn-sm btn-primary" (click)="editUsuario(usuario)">Editar</button>
+                <button class="btn btn-sm btn-danger" (click)="deleteUsuario(usuario)">Eliminar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div *ngIf="loading" class="text-center p-4">
+        <div class="spinner"></div>
+        <p>Cargando usuarios...</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" *ngIf="showModal" (click)="closeModal()" [style.display]="showModal ? 'flex' : 'none'">
+    <div class="modal-content" (click)="$event.stopPropagation()" [style.pointer-events]="'auto'">
+      <div class="modal-header">
+        <h3 class="modal-title">{{ editingUsuario ? 'Editar Usuario' : 'Nuevo Usuario' }}</h3>
+        <button class="close-btn" (click)="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="usuarioForm" (ngSubmit)="saveUsuario()">
+          <div class="form-group">
+            <label class="form-label">Nombre *</label>
+            <input type="text" class="form-control" formControlName="nombre" [class.is-invalid]="usuarioForm.get('nombre')?.invalid && usuarioForm.get('nombre')?.touched">
+            <div class="invalid-feedback" *ngIf="usuarioForm.get('nombre')?.invalid && usuarioForm.get('nombre')?.touched">
+              El nombre es requerido (2-100 caracteres)
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Nombre de Usuario *</label>
+            <input type="text" class="form-control" formControlName="nombre_usuario" [class.is-invalid]="usuarioForm.get('nombre_usuario')?.invalid && usuarioForm.get('nombre_usuario')?.touched">
+            <div class="invalid-feedback" *ngIf="usuarioForm.get('nombre_usuario')?.invalid && usuarioForm.get('nombre_usuario')?.touched">
+              El nombre de usuario es requerido (3-50 caracteres)
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Email *</label>
+            <input type="email" class="form-control" formControlName="email" [class.is-invalid]="usuarioForm.get('email')?.invalid && usuarioForm.get('email')?.touched">
+            <div class="invalid-feedback" *ngIf="usuarioForm.get('email')?.invalid && usuarioForm.get('email')?.touched">
+              Email inválido
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Teléfono</label>
+            <input type="text" class="form-control" formControlName="telefono">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">{{ editingUsuario ? 'Nueva Contraseña (dejar vacío para no cambiar)' : 'Contraseña *' }}</label>
+            <input type="password" class="form-control" formControlName="contraseña" [class.is-invalid]="usuarioForm.get('contraseña')?.invalid && usuarioForm.get('contraseña')?.touched">
+            <small class="form-text text-muted" *ngIf="!editingUsuario">
+              Requisitos: mínimo 8 caracteres, al menos una mayúscula, una minúscula, un número y un carácter especial
+            </small>
+            <div class="invalid-feedback" *ngIf="usuarioForm.get('contraseña')?.invalid && usuarioForm.get('contraseña')?.touched">
+              <span *ngIf="usuarioForm.get('contraseña')?.errors?.['required']">La contraseña es obligatoria</span>
+              <span *ngIf="usuarioForm.get('contraseña')?.errors?.['minlength']">La contraseña debe tener al menos 8 caracteres</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <input type="checkbox" formControlName="es_admin"> Es Administrador
+            </label>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+            <button type="submit" class="btn btn-primary" [disabled]="usuarioForm.invalid">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

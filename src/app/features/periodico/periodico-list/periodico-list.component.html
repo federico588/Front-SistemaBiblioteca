@@ -1,0 +1,86 @@
+<div class="periodico-list">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Gestión de Periódicos</h2>
+      <button class="btn btn-success" (click)="openCreateModal()">Nuevo Periódico</button>
+    </div>
+    <div class="card-body">
+      <input type="text" class="form-control mb-3" placeholder="Buscar periódico..." [(ngModel)]="searchTerm">
+      <table class="table" *ngIf="!loading">
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Fecha Publicación</th>
+            <th>Editorial</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="filteredPeriodicos.length === 0">
+            <td colspan="4" class="text-center">No hay periódicos</td>
+          </tr>
+          <tr *ngFor="let periodico of filteredPeriodicos">
+            <td>{{ periodico.titulo }}</td>
+            <td>{{ periodico.fecha_publicacion | date:'short' }}</td>
+            <td>{{ periodico.id_editorial }}</td>
+            <td>
+              <button class="btn btn-sm btn-primary" (click)="editPeriodico(periodico)">Editar</button>
+              <button class="btn btn-sm btn-danger" (click)="deletePeriodico(periodico)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="loading" class="text-center p-4">Cargando...</div>
+    </div>
+  </div>
+
+  <div class="modal" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3 class="modal-title">{{ editingPeriodico ? 'Editar Periódico' : 'Nuevo Periódico' }}</h3>
+        <button class="close-btn" (click)="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="periodicoForm" (ngSubmit)="savePeriodico()">
+          <div class="form-group">
+            <label class="form-label">Título *</label>
+            <input type="text" class="form-control" formControlName="titulo">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Fecha de Publicación *</label>
+            <input type="datetime-local" class="form-control" formControlName="fecha_publicacion">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Editorial *</label>
+            <select class="form-control" formControlName="id_editorial">
+              <option value="">Seleccionar editorial</option>
+              <option *ngFor="let editorial of editoriales" [value]="editorial.id">{{ editorial.nombre }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Autor *</label>
+            <select class="form-control" formControlName="id_autor">
+              <option value="">Seleccionar autor</option>
+              <option *ngFor="let autor of autores" [value]="autor.id">{{ autor.nombre }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Categoría</label>
+            <select class="form-control" formControlName="id_categoria">
+              <option value="">Sin categoría</option>
+              <option *ngFor="let categoria of categorias" [value]="categoria.id">{{ categoria.nombre }}</option>
+            </select>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+            <button type="submit" class="btn btn-primary" [disabled]="periodicoForm.invalid">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

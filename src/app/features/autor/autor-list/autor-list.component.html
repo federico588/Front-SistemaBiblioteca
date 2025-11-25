@@ -1,0 +1,69 @@
+<div class="autor-list">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Gestión de Autores</h2>
+      <button class="btn btn-success" (click)="openCreateModal()">Nuevo Autor</button>
+    </div>
+    <div class="card-body">
+      <input type="text" class="form-control mb-3" placeholder="Buscar autor..." [(ngModel)]="searchTerm">
+      <table class="table" *ngIf="!loading">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Nacionalidad</th>
+            <th>Bibliografía</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="filteredAutores.length === 0">
+            <td colspan="4" class="text-center">No hay autores</td>
+          </tr>
+          <tr *ngFor="let autor of filteredAutores">
+            <td>{{ autor.nombre }}</td>
+            <td>{{ autor.nacionalidad }}</td>
+            <td>{{ autor.bibliografia || '-' }}</td>
+            <td>
+              <button class="btn btn-sm btn-primary" (click)="editAutor(autor)">Editar</button>
+              <button class="btn btn-sm btn-danger" (click)="deleteAutor(autor)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="loading" class="text-center p-4">Cargando...</div>
+    </div>
+  </div>
+
+  <div class="modal" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3 class="modal-title">{{ editingAutor ? 'Editar Autor' : 'Nuevo Autor' }}</h3>
+        <button class="close-btn" (click)="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="autorForm" (ngSubmit)="saveAutor()">
+          <div class="form-group">
+            <label class="form-label">Nombre *</label>
+            <input type="text" class="form-control" formControlName="nombre">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nacionalidad *</label>
+            <input type="text" class="form-control" formControlName="nacionalidad">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Bibliografía</label>
+            <textarea class="form-control" formControlName="bibliografia" rows="3"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+            <button type="submit" class="btn btn-primary" [disabled]="autorForm.invalid">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

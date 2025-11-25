@@ -1,0 +1,67 @@
+.usuario-list {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  .card {
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .card-title {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+    }
+
+    .card-body {
+      .filters {
+        margin-bottom: 1.5rem;
+
+        .form-control {
+          max-width: 400px;
+        }
+      }
+    }
+  }
+
+  .table {
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .usuario-list {
+    padding: 1rem;
+
+    .card .card-header {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: stretch;
+
+      .card-title {
+        text-align: center;
+      }
+    }
+
+    .table {
+      font-size: 0.75rem;
+
+      .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+        margin: 0.25rem;
+      }
+    }
+  }
+}
+
+
+
+

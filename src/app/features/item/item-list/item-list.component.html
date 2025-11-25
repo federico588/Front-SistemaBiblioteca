@@ -1,0 +1,107 @@
+<div class="item-list">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Gestión de Items (Ejemplares)</h2>
+      <button class="btn btn-success" (click)="openCreateModal()">Nuevo Item</button>
+    </div>
+    <div class="card-body">
+      <input type="text" class="form-control mb-3" placeholder="Buscar por material, código de barras o ubicación..." [(ngModel)]="searchTerm">
+      <table class="table" *ngIf="!loading">
+        <thead>
+          <tr>
+            <th>Material</th>
+            <th>Tipo</th>
+            <th>Código de Barras</th>
+            <th>Ubicación</th>
+            <th>Estado Físico</th>
+            <th>Disponible</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="filteredItems.length === 0">
+            <td colspan="7" class="text-center">No hay items</td>
+          </tr>
+          <tr *ngFor="let item of filteredItems">
+            <td>{{ getMaterialTitulo(item) }}</td>
+            <td><span class="badge badge-primary">{{ item.tipo_item }}</span></td>
+            <td>{{ item.codigo_barras || '-' }}</td>
+            <td>{{ item.ubicacion || '-' }}</td>
+            <td><span class="badge badge-info">{{ item.estado_fisico }}</span></td>
+            <td>
+              <span class="badge" [class.badge-success]="item.disponible" [class.badge-danger]="!item.disponible">
+                {{ item.disponible ? 'Sí' : 'No' }}
+              </span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-primary" (click)="editItem(item)">Editar</button>
+              <button class="btn btn-sm btn-danger" (click)="deleteItem(item)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="loading" class="text-center p-4">Cargando...</div>
+    </div>
+  </div>
+
+  <div class="modal" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3 class="modal-title">{{ editingItem ? 'Editar Item' : 'Nuevo Item' }}</h3>
+        <button class="close-btn" (click)="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="itemForm" (ngSubmit)="saveItem()">
+          <div class="form-group">
+            <label class="form-label">Tipo de Material *</label>
+            <select class="form-control" formControlName="tipo_material" [disabled]="!!editingItem">
+              <option value="">Seleccionar tipo</option>
+              <option value="libro">Libro</option>
+              <option value="revista">Revista</option>
+              <option value="periodico">Periódico</option>
+            </select>
+          </div>
+          <div class="form-group" *ngIf="itemForm.get('tipo_material')?.value">
+            <label class="form-label">Material *</label>
+            <select class="form-control" formControlName="id_material" [disabled]="!!editingItem">
+              <option value="">Seleccionar material</option>
+              <option *ngFor="let material of materialesDisponibles" [value]="material.id">
+                {{ material.titulo }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Código de Barras</label>
+            <input type="text" class="form-control" formControlName="codigo_barras" maxlength="50">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Ubicación</label>
+            <input type="text" class="form-control" formControlName="ubicacion" maxlength="100">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Estado Físico</label>
+            <select class="form-control" formControlName="estado_fisico">
+              <option value="bueno">Bueno</option>
+              <option value="regular">Regular</option>
+              <option value="malo">Malo</option>
+              <option value="reparacion">En Reparación</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">
+              <input type="checkbox" formControlName="disponible"> Disponible
+            </label>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Observaciones</label>
+            <textarea class="form-control" formControlName="observaciones" rows="3"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+            <button type="submit" class="btn btn-primary" [disabled]="itemForm.invalid">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

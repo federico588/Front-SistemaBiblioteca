@@ -1,0 +1,47 @@
+<aside class="left-sidebar" [class.open]="isSidebarOpen">
+  <div class="sidebar-header">
+    <div class="logo-section">
+      <div class="logo-img">
+        <div class="logo-text">BL</div>
+      </div>
+      <span class="brand-text" *ngIf="isSidebarOpen">Biblioteca</span>
+    </div>
+  </div>
+
+  <div class="sidebar-content" [class.scrollable]="true">
+    <nav class="sidebar-nav">
+      <ul class="nav-menu">
+        <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="nav-item">
+          <a [routerLink]="[menuItem.path]" (click)="onMenuItemClick()">
+            <i class="now-ui-icons {{menuItem.icon}}"></i>
+            <span *ngIf="isSidebarOpen">{{menuItem.title}}</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="sidebar-footer" *ngIf="authService.getCurrentUser()">
+    <div class="user-info-dropdown">
+      <button class="user-toggle" (click)="toggleUserMenu()">
+        <div class="user-avatar">
+          <i class="now-ui-icons users_single-02"></i>
+        </div>
+        <div class="user-text" *ngIf="isSidebarOpen">
+          <div class="user-name">{{authService.getCurrentUser()?.nombre}}</div>
+          <div class="user-role">{{authService.getUserRole() | titlecase}}</div>
+        </div>
+        <i class="now-ui-icons arrows-1_minimal-down" *ngIf="isSidebarOpen"></i>
+      </button>
+      <div class="dropdown-menu" [class.show]="isUserMenuOpen" *ngIf="isSidebarOpen">
+        <a class="dropdown-item" (click)="logout()">
+          <i class="now-ui-icons media-1_button-power"></i>
+          <span>Cerrar Sesión</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<div class="sidebar-overlay" *ngIf="isSidebarOpen && isMobile()" (click)="closeSidebar()"></div>
+

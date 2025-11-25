@@ -1,0 +1,69 @@
+<div class="editorial-list">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Gestión de Editoriales</h2>
+      <button class="btn btn-success" (click)="openCreateModal()">Nueva Editorial</button>
+    </div>
+    <div class="card-body">
+      <input type="text" class="form-control mb-3" placeholder="Buscar editorial..." [(ngModel)]="searchTerm">
+      <table class="table" *ngIf="!loading">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Dirección</th>
+            <th>Teléfono</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="filteredEditoriales.length === 0">
+            <td colspan="4" class="text-center">No hay editoriales</td>
+          </tr>
+          <tr *ngFor="let editorial of filteredEditoriales">
+            <td>{{ editorial.nombre }}</td>
+            <td>{{ editorial.direccion || '-' }}</td>
+            <td>{{ editorial.telefono || '-' }}</td>
+            <td>
+              <button class="btn btn-sm btn-primary" (click)="editEditorial(editorial)">Editar</button>
+              <button class="btn btn-sm btn-danger" (click)="deleteEditorial(editorial)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="loading" class="text-center p-4">Cargando...</div>
+    </div>
+  </div>
+
+  <div class="modal" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3 class="modal-title">{{ editingEditorial ? 'Editar Editorial' : 'Nueva Editorial' }}</h3>
+        <button class="close-btn" (click)="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="editorialForm" (ngSubmit)="saveEditorial()">
+          <div class="form-group">
+            <label class="form-label">Nombre *</label>
+            <input type="text" class="form-control" formControlName="nombre">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Dirección</label>
+            <input type="text" class="form-control" formControlName="direccion">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Teléfono</label>
+            <input type="text" class="form-control" formControlName="telefono">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+            <button type="submit" class="btn btn-primary" [disabled]="editorialForm.invalid">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

@@ -1,0 +1,92 @@
+<div class="prestamo-list">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Gestión de Préstamos</h2>
+      <button class="btn btn-success" (click)="openCreateModal()">Nuevo Préstamo</button>
+    </div>
+    <div class="card-body">
+      <input type="text" class="form-control mb-3" placeholder="Buscar préstamo..." [(ngModel)]="searchTerm">
+      <table class="table" *ngIf="!loading">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Usuario</th>
+            <th>Fecha Préstamo</th>
+            <th>Fecha Devolución Estimada</th>
+            <th>Fecha Devolución Real</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="filteredPrestamos.length === 0">
+            <td colspan="7" class="text-center">No hay préstamos</td>
+          </tr>
+          <tr *ngFor="let prestamo of filteredPrestamos">
+            <td>{{ prestamo.id_item }}</td>
+            <td>{{ prestamo.id_usuario }}</td>
+            <td>{{ prestamo.fecha_prestamo | date:'short' }}</td>
+            <td>{{ prestamo.fecha_devolucion_estimada | date:'short' }}</td>
+            <td>{{ prestamo.fecha_devolucion_real ? (prestamo.fecha_devolucion_real | date:'short') : '-' }}</td>
+            <td>
+              <span class="badge" [class.badge-success]="prestamo.estado === 'devuelto'" [class.badge-warning]="prestamo.estado === 'activo'" [class.badge-danger]="prestamo.estado === 'vencido'">
+                {{ prestamo.estado }}
+              </span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-success" *ngIf="prestamo.estado === 'activo'" (click)="devolverPrestamo(prestamo)">Devolver</button>
+              <button class="btn btn-sm btn-primary" (click)="editPrestamo(prestamo)">Editar</button>
+              <button class="btn btn-sm btn-danger" (click)="deletePrestamo(prestamo)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="loading" class="text-center p-4">Cargando...</div>
+    </div>
+  </div>
+
+  <div class="modal" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3 class="modal-title">{{ editingPrestamo ? 'Editar Préstamo' : 'Nuevo Préstamo' }}</h3>
+        <button class="close-btn" (click)="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="prestamoForm" (ngSubmit)="savePrestamo()">
+          <div class="form-group">
+            <label class="form-label">Item *</label>
+            <select class="form-control" formControlName="id_item">
+              <option value="">Seleccionar item</option>
+              <option *ngFor="let item of items" [value]="item.id">{{ item.titulo }} ({{ item.tipo_item }})</option>
+            </select>
+            <div class="invalid-feedback" *ngIf="prestamoForm.get('id_item')?.invalid && prestamoForm.get('id_item')?.touched">
+              El item es obligatorio
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Usuario *</label>
+            <select class="form-control" formControlName="id_usuario">
+              <option value="">Seleccionar usuario</option>
+              <option *ngFor="let usuario of usuarios" [value]="usuario.id">{{ usuario.nombre }} ({{ usuario.nombre_usuario }})</option>
+            </select>
+            <div class="invalid-feedback" *ngIf="prestamoForm.get('id_usuario')?.invalid && prestamoForm.get('id_usuario')?.touched">
+              El usuario es obligatorio
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Fecha Devolución Estimada</label>
+            <input type="date" class="form-control" formControlName="fecha_devolucion_estimada">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+            <button type="submit" class="btn btn-primary" [disabled]="prestamoForm.invalid">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

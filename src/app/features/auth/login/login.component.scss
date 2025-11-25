@@ -1,0 +1,129 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(135deg, #5A1F26 0%, #722F37 50%, #8B3E47 100%);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 450px;
+
+  .card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+
+    .card-header {
+      padding: 2rem 2rem 1rem;
+      background: linear-gradient(135deg, #722F37 0%, #8B3E47 100%);
+      color: white;
+
+      .login-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+      }
+
+      .card-title {
+        color: white;
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .login-subtitle {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.95rem;
+        margin: 0;
+      }
+    }
+
+    .card-body {
+      padding: 2rem;
+    }
+  }
+}
+
+.login-form {
+  .form-group {
+    margin-bottom: 1.5rem;
+
+    .form-label {
+      display: block;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+
+      &:focus {
+        outline: none;
+        border-color: #722F37;
+        box-shadow: 0 0 0 3px rgba(114, 47, 55, 0.1);
+      }
+
+      &.is-invalid {
+        border-color: #dc3545;
+      }
+    }
+
+    .invalid-feedback {
+      display: block;
+      color: #dc3545;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #722F37 0%, #8B3E47 100%);
+    border: none;
+    color: white;
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover:not(:disabled) {
+      background: linear-gradient(135deg, #8B3E47 0%, #A0525D 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(114, 47, 55, 0.4);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    &.loading {
+      opacity: 0.8;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    padding: 1rem;
+  }
+
+  .login-card {
+    max-width: 100%;
+  }
+}
+
+
+
+

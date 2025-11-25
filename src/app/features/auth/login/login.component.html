@@ -1,0 +1,75 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="card">
+      <div class="card-header text-center">
+        <div class="login-icon">
+          <span>📚</span>
+        </div>
+        <h2 class="card-title">Sistema de Biblioteca</h2>
+        <p class="login-subtitle">Inicia sesión para continuar</p>
+      </div>
+      
+      <div class="card-body">
+        <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="login-form">
+          <div class="form-group">
+            <label for="email" class="form-label">
+              Usuario o Email
+            </label>
+            <input 
+              type="text" 
+              id="email"
+              class="form-control" 
+              [(ngModel)]="loginData.email"
+              name="email"
+              required
+              placeholder="admin"
+              #email="ngModel"
+              [class.is-invalid]="email.invalid && email.touched"
+            >
+            <div class="invalid-feedback" *ngIf="email.invalid && email.touched">
+              El usuario es requerido
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password" class="form-label">
+              Contraseña
+            </label>
+            <input 
+              type="password" 
+              id="password"
+              class="form-control" 
+              [(ngModel)]="loginData.password"
+              name="password"
+              required
+              minlength="6"
+              placeholder="••••••••"
+              #password="ngModel"
+              [class.is-invalid]="password.invalid && password.touched"
+            >
+            <div class="invalid-feedback" *ngIf="password.invalid && password.touched">
+              <div *ngIf="password.errors?.['required']">La contraseña es requerida</div>
+              <div *ngIf="password.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <button 
+              type="submit" 
+              class="btn btn-primary w-100"
+              [disabled]="loginForm.invalid || loading"
+              [class.loading]="loading"
+            >
+              <span *ngIf="loading">Iniciando sesión...</span>
+              <span *ngIf="!loading">Iniciar Sesión</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

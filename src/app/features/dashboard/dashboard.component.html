@@ -1,0 +1,151 @@
+<div class="dashboard">
+  <div class="welcome-section">
+    <div class="card">
+      <div class="card-body text-center">
+        <h1 class="welcome-title">Sistema de Gestión de Biblioteca</h1>
+        <p class="welcome-subtitle">
+          Bienvenido al sistema de gestión integral de biblioteca. Aquí puedes gestionar libros, revistas, periódicos, préstamos y multas.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-content">
+    <div class="info-section">
+      <h2>¿Cómo usar el sistema?</h2>
+      
+      <div class="info-cards">
+        <div class="info-card">
+          <div class="info-icon">📚</div>
+          <h3>Gestión de Materiales</h3>
+          <p>Administra libros, revistas y periódicos. Cada material tiene un autor y puede pertenecer a una categoría.</p>
+          <ul>
+            <li><strong>Libros:</strong> Gestiona libros con ISBN, número de páginas y editorial</li>
+            <li><strong>Revistas:</strong> Administra revistas con número de publicación</li>
+            <li><strong>Periódicos:</strong> Controla periódicos con fecha de publicación</li>
+          </ul>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">👥</div>
+          <h3>Gestión de Usuarios</h3>
+          <p>Administra usuarios del sistema, autores y editoriales.</p>
+          <ul>
+            <li><strong>Usuarios:</strong> Gestiona usuarios del sistema con roles (admin/consumidor)</li>
+            <li><strong>Autores:</strong> Administra información de autores de los materiales</li>
+            <li><strong>Editoriales:</strong> Controla las editoriales de los materiales</li>
+          </ul>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">📖</div>
+          <h3>Préstamos</h3>
+          <p>Gestiona los préstamos de materiales a los usuarios.</p>
+          <ul>
+            <li>Registra préstamos de items (libros, revistas o periódicos)</li>
+            <li>Establece fechas de devolución estimadas</li>
+            <li>Marca préstamos como devueltos cuando se regresan</li>
+            <li>Consulta el estado de los préstamos (activo, devuelto, vencido)</li>
+          </ul>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">💰</div>
+          <h3>Multas</h3>
+          <p>Administra multas por retrasos en la devolución de préstamos.</p>
+          <ul>
+            <li>Genera multas automáticamente cuando un préstamo se vence</li>
+            <li>Registra el monto y motivo de la multa</li>
+            <li>Marca multas como pagadas cuando se cobran</li>
+            <li>Consulta el estado de las multas (pendiente, pagada, cancelada)</li>
+          </ul>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">📋</div>
+          <h3>Items y Categorías</h3>
+          <p>Organiza los materiales de la biblioteca.</p>
+          <ul>
+            <li><strong>Items:</strong> Representa los materiales físicos disponibles para préstamo</li>
+            <li><strong>Categorías:</strong> Organiza los items por categorías temáticas</li>
+            <li>Marca items como disponibles o no disponibles</li>
+          </ul>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">🔐</div>
+          <h3>Roles y Permisos</h3>
+          <p>El sistema tiene dos tipos de usuarios:</p>
+          <ul>
+            <li><strong>Administrador:</strong> Acceso completo a todas las funcionalidades</li>
+            <li><strong>Consumidor:</strong> Puede ver items, préstamos y multas, pero no puede gestionar usuarios</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="quick-access" *ngIf="isAdmin">
+      <h2>Acceso Rápido</h2>
+      <div class="quick-links">
+        <a routerLink="/usuarios" class="quick-link">
+          <span class="link-icon">👥</span>
+          <span>Usuarios</span>
+        </a>
+        <a routerLink="/autores" class="quick-link">
+          <span class="link-icon">✍️</span>
+          <span>Autores</span>
+        </a>
+        <a routerLink="/editoriales" class="quick-link">
+          <span class="link-icon">🏢</span>
+          <span>Editoriales</span>
+        </a>
+        <a routerLink="/libros" class="quick-link">
+          <span class="link-icon">📚</span>
+          <span>Libros</span>
+        </a>
+        <a routerLink="/revistas" class="quick-link">
+          <span class="link-icon">📰</span>
+          <span>Revistas</span>
+        </a>
+        <a routerLink="/periodicos" class="quick-link">
+          <span class="link-icon">📄</span>
+          <span>Periódicos</span>
+        </a>
+        <a routerLink="/items" class="quick-link">
+          <span class="link-icon">📦</span>
+          <span>Items</span>
+        </a>
+        <a routerLink="/prestamos" class="quick-link">
+          <span class="link-icon">📖</span>
+          <span>Préstamos</span>
+        </a>
+        <a routerLink="/multas" class="quick-link">
+          <span class="link-icon">💰</span>
+          <span>Multas</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="quick-access" *ngIf="isConsumidor">
+      <h2>Acceso Rápido</h2>
+      <div class="quick-links">
+        <a routerLink="/items" class="quick-link">
+          <span class="link-icon">📦</span>
+          <span>Ver Items Disponibles</span>
+        </a>
+        <a routerLink="/prestamos" class="quick-link">
+          <span class="link-icon">📖</span>
+          <span>Mis Préstamos</span>
+        </a>
+        <a routerLink="/multas" class="quick-link">
+          <span class="link-icon">💰</span>
+          <span>Mis Multas</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
